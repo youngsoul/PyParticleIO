@@ -55,3 +55,15 @@ particle_cloud.internet_button1.publish("do_rainbow")
 
 Test Project
 ------------
+An example usage: ::
+
+    from pyparticleio.ParticleCloud import ParticleCloud
+    access_token = "Your Access Token Here"
+
+    particle_cloud = ParticleCloud(username_or_access_token=access_token)
+
+    all_devices = particle_cloud.devices
+    for device in all_devices:
+        print("Device: {0}".format(device))
+
+    print("done")
