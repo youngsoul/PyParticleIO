@@ -132,7 +132,13 @@ class ParticleCloud(object):
 
             accessed like:
             particle_cloud_variable.device_name
+            or to return all devices:
+            particle_cloud_variable.all_devices
+
         """
+        if name == 'all_devices':
+            return self.devices
+
         if name in self.devices:
             return self.devices[name]
         else:
