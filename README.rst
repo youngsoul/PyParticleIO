@@ -2,7 +2,7 @@
 PyParticleIO: Python package to interface with the ParticleIO cloud
 ===================================================================
 
-PyPI Package to search for is: pyparticleio
+PyPI Package to search for is: PyParticleIO
 ============================================
 
 
