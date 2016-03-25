@@ -55,4 +55,3 @@ particle_cloud.internet_button1.publish("do_rainbow")
 
 Test Project
 ------------
-https://github.com/youngsoul/PyAlexaSkillTest
