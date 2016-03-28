@@ -41,7 +41,7 @@ python setup.py register
 -- to upload a new version of the module
 * activate virtual env
 python setup.py sdist
-twine upload dist/pyalexa-skill-0.0.1*
+twine upload dist/PyParticleIO-0.0.4*
 
 -- test install in project
 pip install -i https://testpypi.python.org/pypi pyalexa-skill
