@@ -12,13 +12,14 @@ interface with the ParticleIO cloud
 This ParticleCloud class is meant to be a minimal python implementation
 to access a Particle devices (Core, Photon, Electron) functions, variables and events.
 
-<b>
+::
+
     Inspired heavily from:
 
     https://github.com/Alidron/spyrk/blob/master/spyrk/spark_cloud.py
 
     -- Thank you for sharing your implementation
-<b>
+
 
 Create Instance of ParticleCloud
 ================================
