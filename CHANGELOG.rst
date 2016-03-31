@@ -31,4 +31,16 @@ Changes:
 ^^^^^^^^
 * removed all_devices attribute because the user can use my_particle_cloud.devices
 
+0.0.5 (2016-31-03)
+------------------
 
+Changes:
+^^^^^^^^
+* documentation update
+
+0.0.6 (2016-31-03)
+------------------
+
+Changes:
+^^^^^^^^
+* documentation update
