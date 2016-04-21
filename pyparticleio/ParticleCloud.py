@@ -17,6 +17,7 @@ requests.packages.urllib3.disable_warnings()
     ** Create Instance of ParticleCloud
     particle_cloud = ParticleCloud(access_token)
     particle_cloud = ParticleCloud(username, password)
+    particle_cloud = ParticleCloud(access_token, device_ids=[only consider these ids])
 
     ** List Devices
     particle_cloud.devices
@@ -58,13 +59,21 @@ class ParticleCloud(object):
     """
     API_PREFIX = 'https://api.particle.io/v1'
 
-    def __init__(self, username_or_access_token, password=None):
+    def __init__(self, username_or_access_token, password=None, device_ids=None):
+        """
+
+        :param username_or_access_token: if access token, then no password is required
+        :param password:
+        :param device_ids: list of device ids to consider.  only these devices will be part of the dynamic API
+                            if None, then all device ids are pulled from Particle Cloud
+        """
         self.particle_cloud_api = Hammock(ParticleCloud.API_PREFIX + "/devices")
         if password is None:
             self.access_token = username_or_access_token
         else:
             self.access_token = self._login(username_or_access_token, password)
 
+        self.device_ids = device_ids
         self._get_devices()
 
     @staticmethod
@@ -108,14 +117,15 @@ class ParticleCloud(object):
         self.devices = {}
         if json_list:
             for d in json_list:
-                info = self._get_device_info(d['id'])
-                d['functions'] = info['functions']
-                d['variables'] = info['variables']
-                d['device_id'] = d['id']  # my preference is to call it device_id
-                d['particle_device_api'] = self.particle_cloud_api(d['id'])
-                d['access_token'] = self.access_token
+                if self.device_ids is None or (self.device_ids is not None and d['id'] in self.device_ids):
+                    info = self._get_device_info(d['id'])
+                    d['functions'] = info['functions']
+                    d['variables'] = info['variables']
+                    d['device_id'] = d['id']  # my preference is to call it device_id
+                    d['particle_device_api'] = self.particle_cloud_api(d['id'])
+                    d['access_token'] = self.access_token
 
-                self.devices[d['name']] = _ParticleDevice(**d)
+                    self.devices[d['name']] = _ParticleDevice(**d)
 
     def _get_device_info(self, device_id):
         """
