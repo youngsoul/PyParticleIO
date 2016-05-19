@@ -51,3 +51,11 @@ Changes:
 Changes:
 ^^^^^^^^
 * add device_ids list to ParticleCloud constructor to allow for optional filter of only the specified device ids.
+
+0.0.8 (2016-05-19)
+------------------
+
+Changes:
+^^^^^^^^
+* added checks for error message construction.
+

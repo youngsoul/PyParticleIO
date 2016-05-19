@@ -161,10 +161,15 @@ class _ParticleDevice(object):
     def _check_error(response):
         """Raises an exception if the Particle Cloud returned an error."""
         if (not response.ok) or (response.status_code != 200):
-            raise Exception(
-                response.json()['error'] + ': ' +
-                response.json()['error_description']
-            )
+            json_response = response.json()
+            execption_msg = "HTTP Status Code: {0}.  ".format(response.status_code)
+            if 'error' in json_response:
+                execption_msg += "  Error: {0}".format(json_response['error'])
+
+            if 'error_description' in json_response:
+                execption_msg += "  Error: {0}".format(json_response['error_description'])
+
+            raise Exception(execption_msg)
 
     def __init__(self, particle_device_api=None, device_id=None, access_token=None, functions=None, variables=None,
                  connected=None, **kwargs):

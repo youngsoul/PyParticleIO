@@ -4,7 +4,7 @@ import os
 
 from setuptools import setup, find_packages
 
-__version__ = "0.0.7"
+__version__ = "0.0.8"
 __title__ = "PyParticleIO"
 __description__ = "Python module with a class to interface with the ParticleIO cloud"
 __uri__ = "https://github.com/youngsoul/PyParticleIO"
