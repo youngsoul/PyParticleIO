@@ -59,15 +59,19 @@ class ParticleCloud(object):
     """
     API_PREFIX = 'https://api.particle.io/v1'
 
-    def __init__(self, username_or_access_token, password=None, device_ids=None):
+    def __init__(self, username_or_access_token, password=None, device_ids=None, **kwargs):
         """
 
         :param username_or_access_token: if access token, then no password is required
         :param password:
         :param device_ids: list of device ids to consider.  only these devices will be part of the dynamic API
                             if None, then all device ids are pulled from Particle Cloud
+        :param **kwargs: hammock session will be initiated with passed kwargs. So if you like to use an http proxy
+                            pass your proxies dictionary here
+
         """
-        self.particle_cloud_api = Hammock(ParticleCloud.API_PREFIX + "/devices")
+
+        self.particle_cloud_api = Hammock(ParticleCloud.API_PREFIX + "/devices", **kwargs)
         if password is None:
             self.access_token = username_or_access_token
         else:
@@ -349,6 +353,16 @@ if __name__ == "__main__":
         print("Event CallBack2: " + str(event_data))
 
     test_name = "event subscribe"
+
+    '''
+    # example how to initialize ParticleCloud with proxy support
+    proxy_dict = {
+        "proxies": {
+            "https": "https://192.168.1.1:8080"
+        }
+    }
+    c = ParticleCloud(username_or_access_token=access_token, **proxy_dict)
+    '''
 
     c = ParticleCloud(username_or_access_token=access_token)
     print(c.devices)

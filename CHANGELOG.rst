@@ -59,3 +59,10 @@ Changes:
 ^^^^^^^^
 * added checks for error message construction.
 
+0.0.9 (2016-08-18)
+------------------
+
+Changes:
+^^^^^^^^
+* add proxy support.
+

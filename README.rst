@@ -68,3 +68,22 @@ An example usage: ::
         print("Device: {0}".format(device))
 
     print("done")
+
+
+Example usage behind a proxy server: ::
+
+    from pyparticleio.ParticleCloud import ParticleCloud
+    access_token = "Your Access Token Here"
+    proxy_dict = {
+        "proxies": {
+            "https": "Your HTTPS Proxy Address Here"  # like "https://192.168.1.1:8080"
+        }
+    }
+
+    particle_cloud = ParticleCloud(username_or_access_token=access_token, **proxy_dict)
+
+    all_devices = particle_cloud.devices
+    for device in all_devices:
+        print("Device: {0}".format(device))
+
+    print("done")
