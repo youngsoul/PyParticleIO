@@ -4,14 +4,14 @@ import os
 
 from setuptools import setup, find_packages
 
-__version__ = "0.0.8"
+__version__ = "0.0.9"
 __title__ = "PyParticleIO"
 __description__ = "Python module with a class to interface with the ParticleIO cloud"
 __uri__ = "https://github.com/youngsoul/PyParticleIO"
 __author__ = "Patrick Ryan"
 __email__ = "pat_ryan_99@yahoo.com"
 __license__ = "Public Domain"
-__copyright__ = "Copyright (c) 2016 Patrick Ryan"
+__copyright__ = "Copyright (c) 2016,2017,2018 Patrick Ryan"
 
 ###############################################################################
 

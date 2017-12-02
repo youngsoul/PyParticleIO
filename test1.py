@@ -1,6 +1,6 @@
 from pyparticleio import ParticleCloud
 
-c = ParticleCloud.ParticleCloud(username_or_access_token='7daf320fc0e2860b8134ed6f353c4107129dee51')
+c = ParticleCloud.ParticleCloud(username_or_access_token='')
 #print(c.devices)
 
 for i in range(0,8):
