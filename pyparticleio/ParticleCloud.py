@@ -57,21 +57,22 @@ class ParticleCloud(object):
     Provides access to the Particle cloud to call function, read variables,
     subscribe for events and publish events.
     """
-    API_PREFIX = 'https://api.particle.io/v1'
 
-    def __init__(self, username_or_access_token, password=None, device_ids=None, **kwargs):
+    def __init__(self, username_or_access_token, password=None, device_ids=None, api_prefix='https://api.particle.io/v1', **kwargs):
         """
 
         :param username_or_access_token: if access token, then no password is required
         :param password:
         :param device_ids: list of device ids to consider.  only these devices will be part of the dynamic API
                             if None, then all device ids are pulled from Particle Cloud
+        :param api_prefix: base url of API server, defaults to https://api.particle.io/v1
         :param **kwargs: hammock session will be initiated with passed kwargs. So if you like to use an http proxy
                             pass your proxies dictionary here
 
         """
 
-        self.particle_cloud_api = Hammock(ParticleCloud.API_PREFIX + "/devices", **kwargs)
+        self.particle_cloud_api = Hammock(api_prefix + "/devices", **kwargs)
+        self.api_prefix = api_prefix
         if password is None:
             self.access_token = username_or_access_token
         else:
@@ -128,6 +129,7 @@ class ParticleCloud(object):
                     d['device_id'] = d['id']  # my preference is to call it device_id
                     d['particle_device_api'] = self.particle_cloud_api(d['id'])
                     d['access_token'] = self.access_token
+                    d['api_prefix'] = self.api_prefix
 
                     self.devices[d['name']] = _ParticleDevice(**d)
 
@@ -176,13 +178,14 @@ class _ParticleDevice(object):
             raise Exception(execption_msg)
 
     def __init__(self, particle_device_api=None, device_id=None, access_token=None, functions=None, variables=None,
-                 connected=None, **kwargs):
+                 connected=None, api_prefix=None, **kwargs):
         self.device_id = device_id
         self.access_token = access_token
         self.particle_device_api = particle_device_api
         self.functions = functions
         self.variables = variables
         self.connected = connected
+        self.api_prefix = api_prefix
 
     def __getattr__(self, name):
         """
@@ -290,7 +293,7 @@ class _ParticleDevice(object):
         if event_name is None:
             raise ParticleDeviceException(message="Invalid Event Name.  An Event name must be provided.")
 
-        url = ParticleCloud.API_PREFIX + "/devices/events/{0}?access_token={1}".format(event_name, self.access_token)
+        url = self.api_prefix + "/devices/events/{0}?access_token={1}".format(event_name, self.access_token)
         t = threading.Thread(target=self._event_loop, args=(event_name, call_back, url))
         t.daemon = True
         t.start()
@@ -308,7 +311,7 @@ class _ParticleDevice(object):
         if event_name is None:
             raise ParticleDeviceException(message="Invalid Event Name.  An Event name must be provided.")
 
-        url = ParticleCloud.API_PREFIX + "/devices/{0}/events/{1}?access_token={2}".format(self.device_id, event_name,
+        url = self.api_prefix + "/devices/{0}/events/{1}?access_token={2}".format(self.device_id, event_name,
                                                                                            self.access_token)
         t = threading.Thread(target=self._event_loop, args=(event_name, call_back, url))
         t.daemon = True
@@ -325,7 +328,7 @@ class _ParticleDevice(object):
         if event_data is not None:
             payload['data'] = event_data
 
-        url = ParticleCloud.API_PREFIX + "/devices/events"
+        url = self.api_prefix + "/devices/events"
         headers = {'Authorization': 'Bearer ' + self.access_token}
         res = requests.post(url, data=payload, params=None, headers=headers, verify=False)
 
