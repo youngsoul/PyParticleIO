@@ -257,7 +257,6 @@ class _ParticleDevice(object):
     def _event_loop(self, event_name, call_back, url):
         while True:
             try:
-                print("Create SSEClient for url: {0}".format(url))
                 sse_client = SSEClient(url=url, retry=5000)
                 # we never leave the for loop because this loop
                 # calls the _next_ method of the sseclient
@@ -272,7 +271,7 @@ class _ParticleDevice(object):
                     if len(str(msg)) > 0:
                         call_back(msg)
             except Exception as exc:
-                print("Error in event loop [{0}],[{1}],[{2}]".format(event_name, url, traceback.print_exc()))
+                print("Error in event loop [{0}],[{1}]".format(event_name, traceback.print_exc()))
                 time.sleep(60)
                 print("Reconnect to SSEClient")
                 continue
