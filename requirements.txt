@@ -1,6 +1,6 @@
 hammock==0.2.4
 pkginfo==1.2.1
-requests==2.18.4
+requests==2.20.0
 requests-toolbelt==0.6.0
 six==1.10.0
 sseclient==0.0.18
