@@ -4,7 +4,7 @@ import os
 
 from setuptools import setup, find_packages
 
-__version__ = "0.0.9"
+__version__ = "0.1.0"
 __title__ = "PyParticleIO"
 __description__ = "Python module with a class to interface with the ParticleIO cloud"
 __uri__ = "https://github.com/youngsoul/PyParticleIO"
@@ -33,8 +33,8 @@ CLASSIFIERS = [
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 INSTALL_REQUIRES = [
-    'requests >= 2.8.1',
-    'sseclient >= 0.0.11',
+    'requests >= 2.18.4',
+    'sseclient >= 0.0.18',
     'hammock >= 0.2.4'
 ]
 
