@@ -5,6 +5,11 @@ PyParticleIO: Python package to interface with the ParticleIO cloud
 PyPI Package to search for is: PyParticleIO
 ===========================================
 
+Install
+===========
+
+`pip install PyParticleIO`
+
 
 ``PyParticleIO`` is an Open Source licensed Python package that provides a class to
 interface with the ParticleIO cloud
