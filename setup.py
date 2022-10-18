@@ -4,20 +4,20 @@ import os
 
 from setuptools import setup, find_packages
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __title__ = "PyParticleIO"
 __description__ = "Python module with a class to interface with the ParticleIO cloud"
 __uri__ = "https://github.com/youngsoul/PyParticleIO"
 __author__ = "Patrick Ryan"
 __email__ = "pat_ryan_99@yahoo.com"
 __license__ = "Public Domain"
-__copyright__ = "Copyright (c) 2016,2017,2018 Patrick Ryan"
+__copyright__ = "Copyright (c) 2016-2022 Patrick Ryan"
 
 ###############################################################################
 
 NAME = __title__
 PACKAGES = find_packages(where=".")
-KEYWORDS = ["ParticleIO", "Photon", "Electron"]
+KEYWORDS = ["ParticleIO", "Photon", "Electron", "Argon", "Boron"]
 CLASSIFIERS = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -25,16 +25,14 @@ CLASSIFIERS = [
     "License :: Public Domain",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 2",
-    "Programming Language :: Python :: 2.7",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.4",
-    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 INSTALL_REQUIRES = [
-    'requests >= 2.18.4',
-    'sseclient >= 0.0.18',
+    'requests >= 2.28.1',
+    'sseclient >= 0.0.27',
     'hammock >= 0.2.4'
 ]
 
