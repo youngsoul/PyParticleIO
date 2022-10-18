@@ -72,3 +72,13 @@ Changes:
 Changes:
 ^^^^^^^^
 * updated dependencies
+
+0.1.1 (2017-12-02)
+------------------
+
+Changes:
+^^^^^^^^
+* Added some python examples
+* added attribute_names, attribute, variable methods to make it easier to use those with named values instead of dot notation
+* make available more of the attributes returned from ParticleIO
+

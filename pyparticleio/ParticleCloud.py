@@ -79,7 +79,10 @@ class ParticleCloud(object):
             self.access_token = self._login(username_or_access_token, password)
 
         self.device_ids = device_ids
-        self._get_devices()
+        self.devices = self._get_devices()
+        self.devices_list = []
+        for k,v in self.devices.items():
+            self.devices_list.append(v)
 
     @staticmethod
     def wait_forever(self):
@@ -119,7 +122,7 @@ class ParticleCloud(object):
         self._check_error(res)
         json_list = res.json()
 
-        self.devices = {}
+        temp_devices = {}
         if json_list:
             for d in json_list:
                 if self.device_ids is None or (self.device_ids is not None and d['id'] in self.device_ids):
@@ -131,7 +134,9 @@ class ParticleCloud(object):
                     d['access_token'] = self.access_token
                     d['api_prefix'] = self.api_prefix
 
-                    self.devices[d['name']] = _ParticleDevice(**d)
+                    temp_devices[d['name']] = _ParticleDevice(**d)
+
+        return temp_devices
 
     def _get_device_info(self, device_id):
         """
@@ -186,15 +191,39 @@ class _ParticleDevice(object):
         self.variables = variables
         self.connected = connected
         self.api_prefix = api_prefix
+        self.other_attributes = kwargs
+
+    def attribute_names(self):
+        return list(self.other_attributes.keys()) + ['functions', 'variables', 'connected', 'api_prefix', 'device_id']
+
+    def variable(self, variable_name):
+        headers = {'Authorization': 'Bearer ' + self.access_token}
+
+        res = self.particle_device_api(variable_name).GET(headers=headers, params={})
+        self._check_error(res)
+        return res.json()['result']
 
     def __getattr__(self, name):
+        return self.attribute(name)
+
+    def attribute(self, name):
         """
         Returns virtual attributes corresponding to function or variable
         names.
         """
         headers = {'Authorization': 'Bearer ' + self.access_token}
 
-        if name == 'subscribe':
+        if name == "functions":
+            return self.functions
+        elif name == "variables":
+            return self.variables
+        elif name == "connected":
+            return self.connected
+        elif name == "api_prefix":
+            return self.api_prefix
+        elif name == "device_id":
+            return self.device_id
+        elif name == 'subscribe':
             def subscribe_call(*args):
                 # args[0] - event name
                 # args[1] - event callback function
@@ -247,9 +276,10 @@ class _ParticleDevice(object):
             return fcall
 
         elif name in self.variables:
-            res = self.particle_device_api(name).GET(headers=headers, params={})
-            self._check_error(res)
-            return res.json()['result']
+            return self.variable(name)
+
+        elif name in self.other_attributes:
+            return self.other_attributes[name]
 
         else:
             raise AttributeError(name + " was not found")
