@@ -9,7 +9,8 @@ if __name__ == '__main__':
     print(devices)
 
     for device in devices:
-        print(device.name)
+        print(device.name, device.id, device.online)
+        print(device.variables)
         print(device.attribute_names())
 
     device_name = "bacon_captain"

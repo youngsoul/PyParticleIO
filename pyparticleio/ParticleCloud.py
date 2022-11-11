@@ -126,7 +126,7 @@ class ParticleCloud(object):
         if json_list:
             for d in json_list:
                 if self.device_ids is None or (self.device_ids is not None and d['id'] in self.device_ids):
-                    info = self._get_device_info(d['id'])
+                    info = self.get_device_info(d['id'])
                     d['functions'] = info['functions']
                     d['variables'] = info['variables']
                     d['device_id'] = d['id']  # my preference is to call it device_id
@@ -138,7 +138,7 @@ class ParticleCloud(object):
 
         return temp_devices
 
-    def _get_device_info(self, device_id):
+    def get_device_info(self, device_id):
         """
             Queries the Particle Cloud for detailed information about a device.
         """

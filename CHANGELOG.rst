@@ -73,7 +73,7 @@ Changes:
 ^^^^^^^^
 * updated dependencies
 
-0.1.1 (2017-12-02)
+0.1.1 (2022-11-02)
 ------------------
 
 Changes:
@@ -82,3 +82,9 @@ Changes:
 * added attribute_names, attribute, variable methods to make it easier to use those with named values instead of dot notation
 * make available more of the attributes returned from ParticleIO
 
+0.1.2 (2012-10-11)
+------------------
+
+Changes:
+^^^^^^^^
+* expose get_device_info as public

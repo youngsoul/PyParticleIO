@@ -1,4 +1,19 @@
 
+-- to upload a new version of the module
+* activate virtual env
+source venv/bin/activate
+
+* update changelog.rst
+* update setup.py
+** update version and any other info
+
+python setup.py sdist
+twine upload dist/PyParticleIO-0.0.9*
+
+
+
+
+----------------------------------------
 https://hynek.me/articles/sharing-your-labor-of-love-pypi-quick-and-dirty/
 
 command line: (no bdist_wheel)
@@ -40,7 +55,7 @@ python setup.py register
 
 -- to upload a new version of the module
 * activate virtual env
-source ../VirtualEnvs/PyParticleIO/bin/activate
+source venv/bin/activate
 python setup.py sdist
 twine upload dist/PyParticleIO-0.0.9*
 
