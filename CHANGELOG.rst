@@ -88,3 +88,10 @@ Changes:
 Changes:
 ^^^^^^^^
 * expose get_device_info as public
+
+0.1.3 (2012-11-20)
+------------------
+
+Changes:
+^^^^^^^^
+* added ability to unsubscribe for events. See example_python_files/event_listeners.py for example
