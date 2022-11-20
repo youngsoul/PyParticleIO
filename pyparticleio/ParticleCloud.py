@@ -3,6 +3,7 @@ import threading
 from sseclient import SSEClient
 from hammock import Hammock
 import traceback
+import json
 
 requests.packages.urllib3.disable_warnings()
 
@@ -192,6 +193,7 @@ class _ParticleDevice(object):
         self.connected = connected
         self.api_prefix = api_prefix
         self.other_attributes = kwargs
+        self.event_listeners = {} # key: event name, value: listening thread
 
     def attribute_names(self):
         return list(self.other_attributes.keys()) + ['functions', 'variables', 'connected', 'api_prefix', 'device_id']
@@ -230,6 +232,12 @@ class _ParticleDevice(object):
                 self._add_device_event_listener(args[0], args[1])
 
             return subscribe_call
+
+        elif name == 'unsubscribe':
+            def unsubscribe_call(*args):
+                # args[0] - event name
+                self._remove_device_event_listener(args[0])
+            return unsubscribe_call
 
         elif name == 'cloud_subscribe':
             def device_subscribe_call(*args):
@@ -285,7 +293,10 @@ class _ParticleDevice(object):
             raise AttributeError(name + " was not found")
 
     def _event_loop(self, event_name, call_back, url):
+        exit_event_loop = False
         while True:
+            if exit_event_loop:
+                break
             try:
                 sse_client = SSEClient(url=url, retry=5000)
                 # we never leave the for loop because this loop
@@ -299,14 +310,20 @@ class _ParticleDevice(object):
                 #
                 for msg in sse_client:
                     if len(str(msg)) > 0:
-                        call_back(msg)
+                        event_data = json.loads(str(msg))
+                        event_data['event_name'] = event_name
+                        call_back(event_data)
+                        # check to see if the event_name is in the collection of event listenters
+                        if event_name not in self.event_listeners.keys():
+                            exit_event_loop = True
+                            break # break out of the for msg loop, setting the exit event loop flag
             except Exception as exc:
                 print("Error in event loop [{0}],[{1}]".format(event_name, traceback.print_exc()))
                 time.sleep(60)
                 print("Reconnect to SSEClient")
                 continue
 
-        print("you will never get here because the for loop calls an iterator")
+        # exiting the event loop
 
     def _add_event_listener(self, event_name, call_back):
         """
@@ -345,6 +362,18 @@ class _ParticleDevice(object):
         t = threading.Thread(target=self._event_loop, args=(event_name, call_back, url))
         t.daemon = True
         t.start()
+        self.event_listeners[event_name] = t
+
+    def _remove_device_event_listener(self, event_name):
+        if event_name is None:
+            raise ParticleDeviceException(message="Invalid Event Name.  An Event name must be provided.")
+        try:
+            print(f"removing event: {event_name}")
+            value = self.event_listeners.pop(event_name, None)
+            if value is None:
+                raise ParticleDeviceException(message="Event name not found")
+        except:
+            raise ParticleDeviceException(message="Event name not found")
 
     def _publish_event(self, event_name, event_data=None, private=True, ttl=60):
         if event_name is None:
