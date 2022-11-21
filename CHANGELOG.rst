@@ -95,3 +95,12 @@ Changes:
 Changes:
 ^^^^^^^^
 * added ability to unsubscribe for events. See example_python_files/event_listeners.py for example
+
+0.1.4 (2012-11-20)
+------------------
+
+Changes:
+^^^^^^^^
+* allow for multiple subscriptions to same event, and ignore extra subscriptions.
+* do not fail on unsubscribe for unknown events
+

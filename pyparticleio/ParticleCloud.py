@@ -357,6 +357,9 @@ class _ParticleDevice(object):
         if event_name is None:
             raise ParticleDeviceException(message="Invalid Event Name.  An Event name must be provided.")
 
+        if event_name in self.event_listeners.keys():
+            return # this is already being subscribed to.
+
         url = self.api_prefix + "/devices/{0}/events/{1}?access_token={2}".format(self.device_id, event_name,
                                                                                            self.access_token)
         t = threading.Thread(target=self._event_loop, args=(event_name, call_back, url))
@@ -367,13 +370,8 @@ class _ParticleDevice(object):
     def _remove_device_event_listener(self, event_name):
         if event_name is None:
             raise ParticleDeviceException(message="Invalid Event Name.  An Event name must be provided.")
-        try:
-            print(f"removing event: {event_name}")
-            value = self.event_listeners.pop(event_name, None)
-            if value is None:
-                raise ParticleDeviceException(message="Event name not found")
-        except:
-            raise ParticleDeviceException(message="Event name not found")
+        if event_name in self.event_listeners.keys():
+            self.event_listeners.pop(event_name, None)
 
     def _publish_event(self, event_name, event_data=None, private=True, ttl=60):
         if event_name is None:

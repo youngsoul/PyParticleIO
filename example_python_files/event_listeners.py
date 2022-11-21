@@ -19,6 +19,9 @@ if __name__ == '__main__':
     c.bacon_captain.subscribe('humidity', _event_call_back)
     c.bacon_captain.subscribe('notthere', _event_call_back)
 
+    c.bacon_captain.subscribe('temp', _event_call_back)
+
+
     value = input("Enter any key to stop waiting:\n")
 
     print("Unsubscribing....")
