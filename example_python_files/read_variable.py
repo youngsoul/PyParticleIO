@@ -18,4 +18,4 @@ if __name__ == '__main__':
     print(c.bacon_captain.humidity)
     print(c.devices[device_name].variable("humidity"))
 
-    print("wifi strength", "->", c.bacon_captain.wifi_strength, "of 10")
+    print("wifi strength", "->", c.bacon_captain.wifi, "of 10")
